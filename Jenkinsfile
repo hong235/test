@@ -19,40 +19,6 @@ pipeline
             args '-u root:sudo'
         }
     }
-    environment
-    {
-        REDIS_VERSION = "redis-stable"
-    }
-	stages
-	{
-		stage("Download Source")
-		{
-			steps
-			{
-				sh '''
-                    wget http://download.redis.io/releases/${REDIS_VERSION}.tar.gz
-				'''
-			}
-		}
-		stage("Extract Source")
-		{
-			steps
-			{
-				sh '''
-                    tar xzf ${REDIS_VERSION}.tar.gz
-				'''
-			}
-		}
-		stage("Build")
-		{
-			steps
-			{
-				sh '''
-					cd ${REDIS_VERSION}
-                    ${LFR_ROOT_PATH}/scripts/lfr-helper.sh make -j$(nproc)
-				'''
-			}
-		}
         stage("Smoke Test")
         {
             steps
@@ -63,5 +29,4 @@ pipeline
                 '''
             }
         }
-	}
 }
